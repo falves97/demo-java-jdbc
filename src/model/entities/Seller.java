@@ -1,21 +1,23 @@
 package model.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Seller implements Serializable {
     private Integer id;
     private String name;
     private String email;
-    private Date birthDate;
+    private Calendar birthDate;
     private Double baseSalary;
     private Department department;
 
     public Seller() {
     }
 
-    public Seller(Integer id, String name, String email, Date birthDate, Double baseSalary, Department department) {
+    public Seller(Integer id, String name, String email, Calendar birthDate, Double baseSalary, Department department) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -48,11 +50,11 @@ public class Seller implements Serializable {
         this.email = email;
     }
 
-    public Date getBirthDate() {
+    public Calendar getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -87,6 +89,9 @@ public class Seller implements Serializable {
 
     @Override
     public String toString() {
+        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyy");
+        String birthDate = dt.format(getBirthDate().getTime());
+
         return "Seller{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
