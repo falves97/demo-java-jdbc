@@ -7,6 +7,7 @@ import model.entities.Department;
 import model.entities.Seller;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,11 +35,15 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public Seller fideById(Integer id) {
+        Statement statement = null;
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-            conn.createStatement().execute("USE coursejdbc");//seleciona o banco de dados correto
+            //seleciona o banco de dados correto
+            statement = conn.createStatement();
+            statement.execute("USE coursejdbc");
+
             st = conn.prepareStatement(
                     "SELECT seller.*, department.Name as DepName "
                     + "FROM seller INNER JOIN department "
@@ -61,6 +66,7 @@ public class SellerDaoJDBC implements SellerDao {
         finally {
             DB.closeResultset(rs);
             DB.closeStatement(st);
+            DB.closeStatement(statement);
         }
     }
 
@@ -86,5 +92,47 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public List<Seller> findAll() {
         return null;
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        Statement statement = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            //seleciona o banco de dados correto
+            statement = conn.createStatement();
+            statement.execute("USE coursejdbc");
+
+            st = conn.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName "
+                    + "FROM seller INNER JOIN department "
+                    + "ON seller.DepartmentId = department.Id "
+                    + "WHERE department.Id = ? "
+                    + "ORDER BY Name"
+            );
+
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+
+            List<Seller> list = new ArrayList<>();
+            Department dep = null;
+            if (rs.next()) {
+                 dep = instantiateDepartment(rs);
+            }
+            do {
+                list.add(instantiateSeller(rs, dep));
+            }while (rs.next());
+
+            return list;
+        } catch (SQLException throwables) {
+            throw new DbException(throwables.getMessage());
+        }
+        finally {
+            DB.closeResultset(rs);
+            DB.closeStatement(st);
+            DB.closeStatement(statement);
+        }
     }
 }
