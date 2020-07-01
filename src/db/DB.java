@@ -8,12 +8,13 @@ import java.util.Properties;
 public class DB {
     private static Connection conn = null;
 
-    public  static Connection getConnection() {
+    public  static Connection getConnection(String db) {
         if (conn == null) {
             try {
                 Properties props = loadProperties();
                 String url = props.getProperty("dburl");
                 conn = DriverManager.getConnection(url, props);
+                useDataBase(conn, db);
             } catch (SQLException throwables) {
                 throw new DbException(throwables.getMessage());
             }
@@ -48,6 +49,20 @@ public class DB {
             } catch (SQLException throwables) {
                 throw new DbException(throwables.getMessage());
             }
+        }
+    }
+
+    private static void useDataBase(Connection conn, String db) {
+        Statement statement = null;
+
+        try {
+            statement = conn.createStatement();
+            statement.execute("USE " + db);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        finally {
+            DB.closeStatement(statement);
         }
     }
 
