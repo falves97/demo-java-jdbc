@@ -112,7 +112,7 @@ public class SellerDaoJDBC implements SellerDao {
             rs = st.executeQuery();
 
             if (rs.next()) {
-                Department dep = DepartmentDaoJDBC.instantiateDepartment(rs);
+                Department dep = instantiateDepartment(rs);
                 Seller seller = instantiateSeller(rs, dep);
                 return seller;
             }
@@ -147,7 +147,7 @@ public class SellerDaoJDBC implements SellerDao {
             while (rs.next()) {
                 Department department = map.get(rs.getInt("DepartmentId"));
                 if (department == null) {
-                    department = DepartmentDaoJDBC.instantiateDepartment(rs);
+                    department = instantiateDepartment(rs);
                     map.put(department.getId(), department);
                 }
                 Seller seller = instantiateSeller(rs, department);
@@ -184,7 +184,7 @@ public class SellerDaoJDBC implements SellerDao {
             List<Seller> list = new ArrayList<>();
             Department dep = null;
             if (rs.next()) {
-                 dep = DepartmentDaoJDBC.instantiateDepartment(rs);
+                 dep = instantiateDepartment(rs);
             }
             do {
                 list.add(instantiateSeller(rs, dep));
@@ -210,5 +210,12 @@ public class SellerDaoJDBC implements SellerDao {
         seller.setBaseSalary(rs.getDouble("BaseSalary"));
         seller.setDepartment(dep);
         return seller;
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        return dep;
     }
 }

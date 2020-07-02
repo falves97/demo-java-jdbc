@@ -48,9 +48,17 @@ public class Program {
 
         DepartmentDao departmentDao = DaoFactory.createDepartmentDAo();
 
+        /*
         System.out.println("\n====== Test 4: insert ======");
         Department department = new Department(null, "Food");
         departmentDao.insert(department);
         System.out.println("Inserido! Novo Id" + department.getId());
+         */
+
+        System.out.println("\n====== Test 5: update ======");
+        Department department = departmentDao.fideById(5);
+        department.setName("Shoots");
+        departmentDao.update(department);
+        System.out.println("Update completo");
     }
 }
