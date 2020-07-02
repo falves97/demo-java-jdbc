@@ -47,18 +47,31 @@ public class Program {
          */
 
         DepartmentDao departmentDao = DaoFactory.createDepartmentDAo();
+        List<Department> list = null;
 
         /*
-        System.out.println("\n====== Test 4: insert ======");
+        System.out.println("\n====== Test 3: findAll ======");
+        list = departmentDao.findAll();
+        list.forEach(System.out::println);
+
+
+        System.out.println("\n====== Test 4: insert and update ======");
         Department department = new Department(null, "Food");
         departmentDao.insert(department);
         System.out.println("Inserido! Novo Id" + department.getId());
-         */
+
 
         System.out.println("\n====== Test 5: update ======");
         Department department = departmentDao.fideById(5);
         department.setName("Shoots");
         departmentDao.update(department);
         System.out.println("Update completo");
+
+        System.out.println("\n====== Test 6: deleteById ======");
+        departmentDao.deleteById(5);
+        System.out.println("Deletado com sucesso");
+        list = departmentDao.findAll();
+        list.forEach(System.out::println);
+         */
     }
 }
