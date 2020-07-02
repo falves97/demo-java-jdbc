@@ -31,5 +31,13 @@ public class Program {
         sellerDao.insert(seller1);
         System.out.println("Inserido! Novo Id" + seller1.getId());
          */
+
+        /*
+        System.out.println("\n====== Test 5: update ======");
+        seller = sellerDao.fideById(9);
+        seller.setName("Fernando Braga");
+        sellerDao.update(seller);
+        System.out.println("Update completo");
+         */
     }
 }
