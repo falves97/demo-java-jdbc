@@ -14,7 +14,6 @@ public class DB {
                 Properties props = loadProperties();
                 String url = props.getProperty("dburl");
                 conn = DriverManager.getConnection(url, props);
-                System.out.println("Conexão feita");
                 useDataBase(conn, db);
             } catch (SQLException throwables) {
                 throw new DbException(throwables.getMessage());
