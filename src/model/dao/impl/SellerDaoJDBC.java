@@ -7,6 +7,7 @@ import model.entities.Department;
 import model.entities.Seller;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 public class SellerDaoJDBC implements SellerDao {
@@ -18,7 +19,41 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller obj) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(
+                    "INSERT INTO seller "
+                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    + "VALUES (?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
+            preparedStatement.setString(1, obj.getName());
+            preparedStatement.setString(2, obj.getEmail());
+            preparedStatement.setDate(3, new Date(obj.getBirthDate().getTime().getTime()));
+            preparedStatement.setDouble(4, obj.getBaseSalary());
+            preparedStatement.setInt(5, obj.getDepartment().getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    obj.setId(id);
+                }
+                DB.closeResultset(resultSet);
+            }
+            else {
+                throw new DbException("Erro inesperado, nenhuma linha foi alterada!");
+            }
+
+        } catch (SQLException throwables) {
+            throw new DbException(throwables.getMessage());
+        }
+        finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override

@@ -24,5 +24,12 @@ public class Program {
         System.out.println("\n====== Test 3: findAll ======");
         list = sellerDao.findAll();
         list.forEach(System.out::println);
+
+        /*
+        System.out.println("\n====== Test 4: insert ======");
+        Seller seller1 = new Seller(null, "Nando", "nando@gmail.com", Calendar.getInstance(), 5000.0, new Department(2, null));
+        sellerDao.insert(seller1);
+        System.out.println("Inserido! Novo Id" + seller1.getId());
+         */
     }
 }
