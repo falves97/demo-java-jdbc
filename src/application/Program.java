@@ -44,12 +44,10 @@ public class Program {
         sellerDao.deleteById(9);
         System.out.println("Deletado com sucesso");
 
-         */
 
         DepartmentDao departmentDao = DaoFactory.createDepartmentDAo();
         List<Department> list = null;
 
-        /*
         System.out.println("\n====== Test 3: findAll ======");
         list = departmentDao.findAll();
         list.forEach(System.out::println);
